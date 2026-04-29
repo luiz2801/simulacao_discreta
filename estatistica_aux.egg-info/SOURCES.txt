@@ -1,0 +1,7 @@
+aux.py
+pyproject.toml
+estatistica_aux.egg-info/PKG-INFO
+estatistica_aux.egg-info/SOURCES.txt
+estatistica_aux.egg-info/dependency_links.txt
+estatistica_aux.egg-info/requires.txt
+estatistica_aux.egg-info/top_level.txt
