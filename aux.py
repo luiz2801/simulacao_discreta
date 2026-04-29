@@ -118,6 +118,18 @@ def get_cumulative_frequency(freq_dict: dict) -> dict:
             running_total += freq_dict[key]
             cumulative_dict[key] = running_total
     return cumulative_dict
+def get_cumulative_frequency(frequency):
+    cumulative_frequency = []
+    
+    for i in range(len(frequency)):
+        if not cumulative_frequency:
+            cumulative_frequency.append(frequency[i])
+            continue
+        cumulative_frequency.append(frequency[i] + cumulative_frequency[i-1])
+
+    return cumulative_frequency
+
+
 
 def normal_pdf(x, mu, sigma):
     """
@@ -129,6 +141,22 @@ def normal_pdf(x, mu, sigma):
     exponent = -((x - mu) ** 2) / (2 * sigma ** 2)
     
     return coefficient * m.exp(exponent)
+
+def get_pdfs(valores: list) -> list: 
+    # Desvio padrão 
+    dp = st.pstdev(valores)
+    lista = []
+    for i in valores:
+        lista.append(normal_pdf(i, st.mean(valores), dp))
+    return lista 
+
+
+def norm_cum_ord_freq(lista_original: list) -> list:
+    lista = []
+    for elemento in lista_original:
+        lista.append(elemento/len(lista_original))
+    return lista
+
 
 lista = [
     11, 5, 2, 0, 9, 9, 1, 5, 1, 3,
@@ -152,22 +180,21 @@ lista = [
     8, 24, 1, 5, 12, 9, 17, 728, 12, 6,
     4, 3, 5, 7, 4, 4, 4, 11, 3, 8
 ]
-
+# ordem crescente
 organizada = sorted(lista)
-sem_outliers = remove_outlier_extremo(organizada)
-frequencia = frequency(sem_outliers)
-freq_acumulada = sum_freq(frequencia)
-# distribuicao = np.random.normal(scale = freq_acumulada)
-sem_rep = set(sem_outliers)
+# removendo outliers
+sem_outliers = remove_extreme_outliers(organizada)
+# frequência de cada item
+frequencia = get_frequency(sem_outliers)
+# frequência acumulada
+freq_acumulada = get_cumulative_frequency(frequencia)
+# removendo duplicatas da lista acumulada
+sem_rep = set(freq_acumulada)
 
-def get_pdfs(valores: list) -> list: 
-    # Desvio padrão 
-    dp = st.pstdev(valores)
-    lista = []
-    for i in valores:
-        lista.append(normal_pdf(i, st.mean(valores), dp))
-    return lista    
-# print("olha aqui", get_pdfs(sem_outliers))
+print("olha aqui", norm_cum_ord_freq(sem_rep))
+   
+
+
 
 
 
